@@ -27,12 +27,12 @@ class App extends Component {
 
     searchText: "search for me",
   };
-  
+
   render() {
     return (
       < div >
-        <Header />
-        <NotesList />
+        <Header searchText={this.state.searchText}/>
+        <NotesList notes={this.state.notes}/>
       </div >
     );
   }
