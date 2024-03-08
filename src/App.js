@@ -13,7 +13,7 @@ class App extends Component {
       },
     ],
 
-    searchText: "search for me",
+    searchText: "",
   };
 
   onType = (editMeId, updatedKey, updatedValue) => {
@@ -30,8 +30,8 @@ class App extends Component {
         }
       }
     });
-    this.setState({notes: updatedNotes});
-  }
+    this.setState({ notes: updatedNotes });
+  };
 
   addNote = () => {
     // create new note
@@ -44,16 +44,47 @@ class App extends Component {
     // add new note to existing notes array in state
     const newNotes = [newNote, ...this.state.notes]
     this.setState({ notes: newNotes });
-  }
+  };
+
+  onSearch = (text) => {
+    // convert incoming text to lowercase for comparison
+    const newSearchText = text.toLowerCase();
+
+    // Map over notes and return notes that match search
+    const updatedNotes = this.state.notes.map(note => {
+      if (!newSearchText) {
+        /* If the search field is empty, then
+          we set the doesMatchSearch value for every note to true. */
+        note.doesMatchSearch = true;
+        return note;
+      } else {
+        // convert title and description to lowercase
+        const title = note.title.toLowerCase();
+        const description = note.description.toLowerCase();
+        // create variables for matching titles and descriptions
+        const titleMatch = title.includes(newSearchText);
+        const descriptionMatch = description.includes(newSearchText);
+        // hasMatch is true if there is a match in either a title or a description. Otherwise, it is false
+        const hasMatch = titleMatch || descriptionMatch;
+        note.doesMatchSearch = hasMatch; // set doesMatchSearch property
+        return note;
+      }
+    });
+    // update state
+    this.setState({
+      notes: updatedNotes,
+      searchText: newSearchText,
+    })
+  };
 
   render() {
     return (
       < div >
-        <Header searchText={this.state.searchText} addNote={this.addNote}/>
-        <NotesList notes={this.state.notes} onType={this.onType}/>
+        <Header searchText={this.state.searchText} addNote={this.addNote} />
+        <NotesList notes={this.state.notes} onType={this.onType} />
       </div >
     );
-  }
-}
+  };
+};
 
 export default App;
