@@ -5,8 +5,8 @@ const NotesList = (props) => {
     // console.log(props);
     const keepSearchMatches = note => note.doesMatchSearch;
     const searchMatches = props.notes.filter(keepSearchMatches);
-    
-    const renderNote = (note) => <Note note={note} id={note.id} />
+
+    const renderNote = (note) => <Note note={note} id={note.id} onType={props.onType} />
     const noteElements = searchMatches.map(renderNote);
     return (
         <ul className="notes-list">
