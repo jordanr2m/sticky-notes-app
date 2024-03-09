@@ -77,11 +77,37 @@ class App extends Component {
     })
   };
 
+  removeNote = (noteId) => {
+    /* remove note by id of note that the user clicked on */
+    const notIdMatch = (note) => note.id !== noteId;
+    // filter notes array
+    const updatedNotes = this.state.notes.filter(notIdMatch);
+    // update state
+    this.setState({notes: updatedNotes});
+  }
+
+  componentDidUpdate() {
+    /* after each render, save notes data to local storage */
+    const stringifiedNotes = JSON.stringify(this.state.notes);
+    localStorage.setItem("savedNotes", stringifiedNotes);
+  }
+
+  componentDidMount() {
+    /* after rendering for the first time, read saved
+    notes data from local storage and pass that data
+    to component state if it exists */
+    const stringifiedNotes = localStorage.getItem("savedNotes");
+    if (stringifiedNotes) {
+      const savedNotes = JSON.parse(stringifiedNotes);
+      this.setState({notes: savedNotes});
+    }
+  }
+
   render() {
     return (
       < div >
         <Header searchText={this.state.searchText} addNote={this.addNote} />
-        <NotesList notes={this.state.notes} onType={this.onType} />
+        <NotesList notes={this.state.notes} onType={this.onType} removeNote={this.removeNote} />
       </div >
     );
   };
