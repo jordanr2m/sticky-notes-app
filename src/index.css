@@ -57,6 +57,10 @@ textarea {
   outline: none;
 }
 
+.add-new:focus {
+  border: 2px solid blue;
+}
+
 .note {
   font-family: "Permanent Marker", cursive;
   width: 200px;
