@@ -16,6 +16,20 @@ class App extends Component {
     searchText: "",
   };
 
+  // create new note
+  addNote = () => {
+    const newNote = {
+      id: Date.now(),
+      title: "",
+      description: "",
+      doesMatchSearch: true,
+    };
+    // add new note to existing notes array in state
+    const newNotes = [newNote, ...this.state.notes]
+    this.setState({ notes: newNotes });
+  };
+
+  // update existing note
   onType = (editMeId, updatedKey, updatedValue) => {
     const updatedNotes = this.state.notes.map(note => {
       if (note.id !== editMeId) {
@@ -33,19 +47,7 @@ class App extends Component {
     this.setState({ notes: updatedNotes });
   };
 
-  addNote = () => {
-    // create new note
-    const newNote = {
-      id: Date.now(),
-      title: "",
-      description: "",
-      doesMatchSearch: true,
-    };
-    // add new note to existing notes array in state
-    const newNotes = [newNote, ...this.state.notes]
-    this.setState({ notes: newNotes });
-  };
-
+  // search for notes
   onSearch = (text) => {
     // convert incoming text to lowercase for comparison
     const newSearchText = text.toLowerCase();
@@ -77,6 +79,7 @@ class App extends Component {
     })
   };
 
+  // delete a note
   removeNote = (noteId) => {
     /* remove note by id of note that the user clicked on */
     const notIdMatch = (note) => note.id !== noteId;
@@ -105,10 +108,10 @@ class App extends Component {
 
   render() {
     return (
-      < div >
+      <div>
         <Header searchText={this.state.searchText} addNote={this.addNote} onSearch={this.onSearch}/>
         <NotesList notes={this.state.notes} onType={this.onType} removeNote={this.removeNote} />
-      </div >
+      </div>
     );
   };
 };
